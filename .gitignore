@@ -1,0 +1,5 @@
+./pythia-backend/env
+./pythia-backend/.env 
+./Pythia/node_modules
+./Pythia/dist
+
