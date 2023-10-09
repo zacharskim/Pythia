@@ -46,7 +46,7 @@ export class Commands {
             if (editorToClose) {
             // Close the file if found.
             vscode.commands.executeCommand('workbench.action.closeActiveEditor',{
-                viewColumn: editorToClose.viewColumn,
+                // viewColumn: editorToClose.viewColumn,
                 preview: false,
               });
             } else {

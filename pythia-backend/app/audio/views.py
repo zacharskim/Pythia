@@ -4,9 +4,9 @@ import openai
 import pvporcupine
 import pyaudio
 import numpy as np
+import os
 
-openai.api_key = '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'
-
+openai.api_key = os.environ.get('OPENAI_API_KEY') 
 
 porcupine = pvporcupine.create(
   access_key='VLs93afkZvgYp7uabSMemYvcS+nwQGpzRh1qkyQsUdFijA0dQvPiiQ==',

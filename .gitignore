@@ -1,5 +1,10 @@
-./pythia-backend/env
-./pythia-backend/.env 
-./Pythia/node_modules
-./Pythia/dist
+pythia-backend/env
+pythia-backend/.env 
+pythia-backend/__pycache__
+pythia-backend/app/audio/__pycache__
+pythia-backend/app/gpt4/__pycache__
+pythia-backend/app/__pycache__
+Pythia/node_modules
+Pythia/dist
+
 

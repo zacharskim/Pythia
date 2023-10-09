@@ -1,6 +1,8 @@
 from flask import Blueprint, request, jsonify
 import openai
-openai.api_key = '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'
+import os
+
+openai.api_key = os.environ.get('OPENAI_API_KEY') 
 
 gpt_blueprint = Blueprint('openai', __name__)
 
