@@ -5,12 +5,17 @@ import 'media/font-awesome.css';
 import { sendInput } from '../services/gpt4';
 import axios, { CancelTokenSource } from 'axios';
 import MarkdownRenderer from './MarkdownRenderer';
+import { Interface } from 'readline';
 
 export interface IAppProps {}
 
 export interface Message {
   role: "user" | "assistant";
   content: string;
+}
+
+export interface MessageEvent {
+  data: string;
 }
 
 export const App: React.FunctionComponent<IAppProps> = ({ }: React.PropsWithChildren<IAppProps>) => {
@@ -27,8 +32,11 @@ export const App: React.FunctionComponent<IAppProps> = ({ }: React.PropsWithChil
   const textAreaWrapperRef = React.useRef<HTMLDivElement>(null);
   const [cancelRequest, setCancelRequest] = React.useState<(() => void) | null>(null);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [streamData, setStreamData] = React.useState<string>('');
+
 
   async function sendMessageBack(input: Message[]): Promise<void> {
+    console.log('sending input');
     const { promise, cancel } = sendInput(input);
     setIsLoading(true);
     setCancelRequest(() => cancel);
@@ -119,11 +127,32 @@ export const App: React.FunctionComponent<IAppProps> = ({ }: React.PropsWithChil
   };
 
   const mergedMessages = mergeMessages(userMessages, assistantMessages);
+  // console.log(mergedMessages, 'merged messages');
   React.useEffect(() => {
 
+    console.log('use effect', streamData);
+    
+    console.log(streamData, 'huh stream data');
     if (mergedMessages.length > 0) {
       sendMessageBack(mergedMessages);
+
+      const sse = new EventSource('http://127.0.0.1:5000/msgs/gpt4');
+      sse.onmessage = e => {
+      handleStream(e);
+    };
+
+      sse.onerror = (error) => {
+      console.log('oof error', error);
+      sse.close();
+    };     
     }
+
+    
+    function handleStream(e: MessageEvent){
+      console.log(e.data, 'e data');
+      setStreamData(streamData => streamData + e.data);
+    }
+
 
 
     const handleClickOutside = (event: MouseEvent) => {

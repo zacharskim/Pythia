@@ -1,5 +1,3 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import { join } from 'path';
 import * as vscode from 'vscode';
 import { ExtensionContext, ExtensionMode, Uri, Webview } from 'vscode';
@@ -8,7 +6,6 @@ import { startListening, startListeningSocket } from './services/whisper';
 function sleep(ms: number): Promise<void> {
 	return new Promise((resolve) => setTimeout(resolve, ms));
   }
-
 
   //consider this thing
   let statusBar: vscode.StatusBarItem;
@@ -81,7 +78,18 @@ export function activate(context: vscode.ExtensionContext) {
 	
 	context.subscriptions.push(disposable);
 
-	context.subscriptions.push(
+
+	let clearChatDisposable = vscode.commands.registerCommand('pythia.clearChat', async () => {
+		console.log('working');
+
+	});
+
+
+	context.subscriptions.push(clearChatDisposable);
+
+
+
+context.subscriptions.push(
 		vscode.window.registerWebviewViewProvider("pythia-sidebar", {
 		  resolveWebviewView: (webviewView: vscode.WebviewView) => {
 			const panel = webviewView.webview;
@@ -89,15 +97,17 @@ export function activate(context: vscode.ExtensionContext) {
 			panel.options = {
 			  enableScripts: true,
 			};
-	  
 			panel.html = getWebviewContent(context, panel);
 		  },
 		})
 	  );
+	
 }
 
 
-export function deactivate() {}
+export function deactivate() {
+	console.log('running???');
+}
 
 
 const getWebviewContent = (context: ExtensionContext, webview: Webview) => {

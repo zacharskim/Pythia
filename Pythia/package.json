@@ -30,7 +30,7 @@
           "id": "pythia-sidebar",
           "name": "Pythia",
           "icon": "media/eye.svg",
-          "contextualTitle": "Pythia"
+          "contextualTitle": "Pythia??"
         }
       ]
     },
@@ -49,8 +49,28 @@
         "command": "pythia.stopListening",
         "category": "Pythia",
         "title": "Stop Listening"
+      },
+      {
+        "command": "pythia.clearChat",
+        "title": "Clear Chat History",
+        "icon": "media/clear-all.svg"
       }
-    ]
+    ],
+    "menus": {
+      "view/item/context": [
+        {
+          "command": "pythia.clearChat",
+          "when": "view == pythia-sidebar"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "pythia.clearChat",
+          "when": "view == pythia-sidebar",
+          "group": "navigation"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
@@ -70,6 +90,8 @@
   },
   "devDependencies": {
     "@estruyf/vscode": "^1.1.0-beta.3196622",
+    "@types/event-source-polyfill": "^1.0.2",
+    "@types/eventsource": "^1.1.12",
     "@types/glob": "^7.2.0",
     "@types/mocha": "^9.1.1",
     "@types/node": "16.x",
@@ -100,6 +122,8 @@
   "dependencies": {
     "axios": "^1.3.4",
     "bufferutil": "^4.0.7",
+    "event-source-polyfill": "^1.0.31",
+    "eventsource": "^2.0.2",
     "react-copy-to-clipboard": "^5.1.0",
     "react-markdown": "^8.0.6",
     "react-syntax-highlighter": "^15.5.0",
