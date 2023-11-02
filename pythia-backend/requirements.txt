@@ -1,5 +1,53 @@
-Flask==2.1.1
-requests==2.27.1
-openai==0.27.2
-asyncio==3.4.3
-flask_cors==3.0.10
+# aiohttp==3.8.6
+# aiosignal==1.3.1
+# async-timeout==4.0.3
+# attrs==23.1.0
+# bidict==0.22.1
+# blinker==1.6.3
+# cachelib==0.10.2
+# certifi==2023.7.22
+# charset-normalizer==3.3.0
+# click==8.1.7
+# Flask==3.0.0
+# Flask-Cors==4.0.0
+# Flask-Session==0.5.0
+# Flask-SocketIO==5.3.6
+# Flask-SSE==1.0.0
+# frozenlist==1.4.0
+# h11==0.14.0
+# idna==3.4
+# itsdangerous==2.1.2
+# Jinja2==3.1.2
+# MarkupSafe==2.1.3
+# multidict==6.0.4
+# numpy==1.26.1
+# openai==0.28.1
+# pvporcupine==2.2.1
+# PyAudio==0.2.13
+# python-engineio==4.8.0
+# python-socketio==5.10.0
+# redis==5.0.1
+# requests==2.31.0
+# simple-websocket==1.0.0
+# six==1.16.0
+# SpeechRecognition==3.10.0
+# tqdm==4.66.1
+# urllib3==2.0.7
+# Werkzeug==3.0.0
+# wsproto==1.2.0
+# yarl==1.9.2
+bidict==0.22.0
+click==8.1.3
+dnspython==2.2.1
+eventlet==0.33.1
+Flask==2.1.2
+Flask-Cors==3.0.10
+Flask-SocketIO==5.2.0
+greenlet==1.1.2
+itsdangerous==2.1.2
+Jinja2==3.1.2
+MarkupSafe==2.1.1
+python-engineio==4.3.2
+python-socketio==5.6.0
+six==1.16.0
+Werkzeug==2.1.2

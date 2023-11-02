@@ -137,4 +137,21 @@ const getWebviewContent = (context: ExtensionContext, webview: Webview) => {
 		<script src="${scriptUrl}" />
 	</body>
 	</html>`;
-}
+};
+
+
+//tomorrow
+//comitt a working version of the webview to github
+//fix the clear / cancel call button
+//fix the input box styling
+//make it auto-scroll or work better when new messages are added / sent etc
+//make the data persist on open / close (make it fast too?)
+//make the copy / paste button a little more aestically pleasing...
+
+//future
+//voice commands
+//keyboard shortcuts
+//ability to dictate
+//ability to easily point it to parts of your code 
+//explain error issues etc...
+
