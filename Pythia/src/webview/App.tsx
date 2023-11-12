@@ -46,7 +46,7 @@ export const App: React.FunctionComponent<IAppProps> = ({ }: React.PropsWithChil
       <h1>Pythia</h1>
       <h5>Conduit between you and some LLM</h5>
       <MessageBaseComponent socket={socketInstance} generatingResponse={responseLoading} setResponseLoading={setResponseLoading} />
-      <LoadingIndicator generatingResponse={responseLoading}/> 
+      <LoadingIndicator generatingResponse={responseLoading} setResponseLoading={setResponseLoading} socket={socketInstance}/> 
     </div>
   );
 };

@@ -24,7 +24,6 @@ export default function MessageBaseComponent (props: IMessageBaseComponentProps)
     //messages changes, so we can emit some data prolly
     const mostRecentMsg : Message = messages[messages.length - 1];
     if(messages.length > 0 && mostRecentMsg['role'] === 'user'){
-      console.log('sending this message');
       socket?.emit('data', messages);
       setResponseLoading(true);
     } 
