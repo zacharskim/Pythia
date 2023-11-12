@@ -10,6 +10,7 @@ CORS(app,resources={r"/*":{"origins":"*"}})
 socketio = SocketIO(app,cors_allowed_origins="*")
     
 openai.api_key = os.environ.get('OPENAI_API_KEY') 
+cancel_flags = {}
 
 @socketio.on("connect")
 def connected():
@@ -19,12 +20,22 @@ def connected():
 @socketio.on('data')
 def handle_message(data):
     """event listener when client types a message"""
-    print("data from the front end: ",str(data))
+    sid = request.sid
+    print("data from the front end: ", str(data))
+
+    # Ensure the flag is initialized for this session
+    if sid not in cancel_flags:
+        cancel_flags[sid] = False
+
     #so here is where we will call open ai etc...lfg...
     for chunk in call_gpt4(data):
+        if cancel_flags[sid]:
+            cancel_flags[sid] = False  # Reset flag
+            break  # Stop processing and don't emit
+
         if(chunk['choices'][0]['finish_reason'] != 'stop'):
             print('emitting...', chunk['choices'][0]['delta']['content'])
-            emit("data",{'data': chunk['choices'][0]['delta']['content'], 'id': request.sid},broadcast=True)
+            emit("data",{'data': chunk['choices'][0]['delta']['content'], 'id': request.sid}, broadcast=True)
         elif (chunk['choices'][0]['finish_reason'] == 'stop'):
             emit("data",{'data':'STOP' , 'id': request.sid},broadcast=True)
 
@@ -34,6 +45,12 @@ def disconnected():
     print("user disconnected")
     emit("disconnect",f"user {request.sid} disconnected",broadcast=True)
 
+
+@socketio.on('cancel_request')
+def handle_cancel_request(data):
+    print('cancel request received')
+    sid = request.sid
+    cancel_flags[sid] = True
 
 def call_gpt4(input_text):
     
