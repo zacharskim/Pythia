@@ -13,11 +13,31 @@ export interface Message {
   content: string;
 }
 
+export interface clearMsg {
+  command: string;
+}
+
 export default function MessageBaseComponent (props: IMessageBaseComponentProps) {
   const { socket, generatingResponse, setResponseLoading } = props;
 
   const [messages, setMessages] = React.useState<Message[]>([]);
   const [inputValue, setInputValue] = React.useState<string>('');
+
+
+  React.useEffect(() => {
+    window.addEventListener('message', receiveMessage);
+  
+    return () => {
+      window.removeEventListener('message', receiveMessage);
+    };
+  }, []);
+  
+  const receiveMessage = (event: { data: clearMsg; }) => {
+    const message = event.data; // The JSON data our extension sent
+    if (message.command === 'clearChat') {
+      setMessages([]);
+    }
+  };
 
 
   React.useEffect(() => {

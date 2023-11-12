@@ -11,6 +11,7 @@ export interface IInputFieldProps {
 
 export default function InputField (props: IInputFieldProps) {
   const { input, setInput, setMessages, generatingResponse } = props;
+  const [isFocused, setIsFocused] = React.useState(false);
   
   const micIconRef = React.useRef<HTMLSpanElement>(null);
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
@@ -20,6 +21,9 @@ const handleInput = () => {
       adjustHeight(textareaRef.current);
     } 
   };
+
+const handleFocus = () => setIsFocused(true);
+const handleBlur = () => setIsFocused(false);
 
 const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey && !generatingResponse) {
@@ -59,7 +63,7 @@ const sendmessage = () => {
   return (
     <div>
       <div className="input-container">
-        <div className='input-wrapper'>
+        <div className={`input-wrapper ${isFocused ? 'focused' : ''}`}>
             <textarea
               className="message-input"
               ref={textareaRef}
@@ -67,6 +71,8 @@ const sendmessage = () => {
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyPress}
               onInput={handleInput}
+              onFocus={handleFocus} 
+              onBlur={handleBlur}
             />
         <i ref={micIconRef} className="fas fa-microphone mic-icon" onClick={handleMicIconClick}/>
         </div>

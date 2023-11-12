@@ -10,7 +10,7 @@ function sleep(ms: number): Promise<void> {
   //consider this thing
   let statusBar: vscode.StatusBarItem;
 export function activate(context: vscode.ExtensionContext) {
-
+	let currentWebviewPanel: vscode.Webview | undefined;
 
 //two new commands for indicating listengin or not...
   statusBar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 1);
@@ -81,7 +81,9 @@ export function activate(context: vscode.ExtensionContext) {
 
 	let clearChatDisposable = vscode.commands.registerCommand('pythia.clearChat', async () => {
 		console.log('working');
-
+		if (currentWebviewPanel) {
+			currentWebviewPanel.postMessage({ command: 'clearChat' });
+		}
 	});
 
 
@@ -92,12 +94,12 @@ export function activate(context: vscode.ExtensionContext) {
 context.subscriptions.push(
 		vscode.window.registerWebviewViewProvider("pythia-sidebar", {
 		  resolveWebviewView: (webviewView: vscode.WebviewView) => {
-			const panel = webviewView.webview;
+			 currentWebviewPanel = webviewView.webview;
 	  
-			panel.options = {
+			currentWebviewPanel.options = {
 			  enableScripts: true,
 			};
-			panel.html = getWebviewContent(context, panel);
+			currentWebviewPanel.html = getWebviewContent(context, currentWebviewPanel);
 		  },
 		})
 	  );

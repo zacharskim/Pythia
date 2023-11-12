@@ -156,9 +156,9 @@ textarea::placeholder {
 	padding: 8px;
 	background-color: var(--vscode-input-background);
 }
-  
-.input-wrapper:focus{
-	outline-color: var(--vscode-focusBorder) !important;
+
+.input-wrapper.focused {
+    border: 2px solid var(--vscode-focusBorder); 
 }
   
   .send-button {
