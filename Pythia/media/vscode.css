@@ -1,230 +1,275 @@
 :root {
-	--container-paddding: 20px;
-	--input-padding-vertical: 6px;
-	--input-padding-horizontal: 4px;
-	--input-margin-vertical: 4px;
-	--input-margin-horizontal: 0;
+  --container-paddding: 20px;
+  --input-padding-vertical: 6px;
+  --input-padding-horizontal: 4px;
+  --input-margin-vertical: 4px;
+  --input-margin-horizontal: 0;
 }
 
 body {
-	padding: 0 var(--container-paddding);
-	color: var(--vscode-foreground);
-	font-size: var(--vscode-font-size);
-	font-weight: var(--vscode-font-weight);
-	font-family: var(--vscode-font-family);
-	background-color: var(--vscode-editor-background);
+  padding: 0 var(--container-paddding);
+  color: var(--vscode-foreground);
+  font-size: var(--vscode-font-size);
+  font-weight: var(--vscode-font-weight);
+  font-family: var(--vscode-font-family);
+  background-color: var(--vscode-sideBar-background);
+}
+
+// Hide scrollbar for Chrome, Safari and Opera
+/* body::-webkit-scrollbar {
+	width: 8px;
+  }
+  
+  body::-webkit-scrollbar-track {
+	background: var(--vscode-editor-background); 
+  }
+   
+  body::-webkit-scrollbar-thumb {
+	background: var(--vscode-editor-background); 
+	border-radius: 10px;
+  }
+  
+  body::-webkit-scrollbar-thumb:hover {
+	background: var(--vscode-editor-background); 
+  }  */
+
+html {
+  cursor: default;
 }
 
 ol,
 ul {
-	padding-left: var(--container-paddding);
+  padding-left: var(--container-paddding);
 }
 
 body > *,
 form > * {
-	margin-block-start: var(--input-margin-vertical);
-	margin-block-end: var(--input-margin-vertical);
+  margin-block-start: var(--input-margin-vertical);
+  margin-block-end: var(--input-margin-vertical);
 }
 
 *:focus {
-	outline-color: var(--vscode-focusBorder) !important;
+  outline-color: var(--vscode-focusBorder) !important;
 }
 
 a {
-	color: var(--vscode-textLink-foreground);
+  color: var(--vscode-textLink-foreground);
 }
 
 a:hover,
 a:active {
-	color: var(--vscode-textLink-activeForeground);
+  color: var(--vscode-textLink-activeForeground);
 }
 
 code {
-	font-size: var(--vscode-editor-font-size);
-	font-family: var(--vscode-editor-font-family);
+  font-size: var(--vscode-editor-font-size);
+  font-family: var(--vscode-editor-font-family);
 }
 
 button {
-	border: none;
-	padding: var(--input-padding-vertical) var(--input-padding-horizontal);
-	width: 100%;
-	text-align: center;
-	outline: 1px solid transparent;
-	outline-offset: 2px !important;
-	color: var(--vscode-button-foreground);
-	background: var(--vscode-button-background);
+  border: none;
+  padding: var(--input-padding-vertical) var(--input-padding-horizontal);
+  width: 100%;
+  text-align: center;
+  outline: 1px solid transparent;
+  outline-offset: 2px !important;
+  color: var(--vscode-button-foreground);
+  background: var(--vscode-button-background);
 }
 
 button:hover {
-	cursor: pointer;
-	background: var(--vscode-button-hoverBackground);
+  cursor: pointer;
+  background: var(--vscode-button-hoverBackground);
 }
 
 button:focus {
-	outline-color: var(--vscode-focusBorder);
+  outline-color: var(--vscode-focusBorder);
 }
 
 button.secondary {
-	color: var(--vscode-button-secondaryForeground);
-	background: var(--vscode-button-secondaryBackground);
+  color: var(--vscode-button-secondaryForeground);
+  background: var(--vscode-button-secondaryBackground);
 }
 
 button.secondary:hover {
-	background: var(--vscode-button-secondaryHoverBackground);
+  background: var(--vscode-button-secondaryHoverBackground);
 }
 
-input:not([type='checkbox']),
+input:not([type="checkbox"]),
 textarea {
-	display: block;
-	width: 100%;
-	height: 28px;
-	border: none;
-	font-family: var(--vscode-font-family);
-	padding: var(--input-padding-vertical) var(--input-padding-horizontal);
-	color: var(--vscode-input-foreground);
-	outline-color: var(--vscode-input-border);
-	background-color: var(--vscode-input-background);
+  display: block;
+  width: 100%;
+  height: 28px;
+  border: none;
+  font-family: var(--vscode-font-family);
+  padding: var(--input-padding-vertical) var(--input-padding-horizontal);
+  color: var(--vscode-input-foreground);
+  outline-color: var(--vscode-input-border);
+  background-color: var(--vscode-input-background);
 }
 
 input::placeholder,
 textarea::placeholder {
-	color: var(--vscode-input-placeholderForeground);
+  color: var(--vscode-input-placeholderForeground);
 }
 
 .app {
-	display: flex;
-	flex-direction: column;
-	height: 100%;
-  }
-  
-  .message-list {
-	display: flex;
-	flex-direction: column;
-	flex: 1;
-	overflow-y: auto;
-	padding: 10px 0px 80px 0px
-  }
-  
-  .user-message {
-	background-color: #3A606E;
-	border-radius: 5px;
-	color: white;
-	margin-bottom: 10px;
-	padding: 8px 12px;
-	display: inline-block;
-	overflow-wrap: break-word;
-	overflow-x: hidden;
-  }
+  display: flex;
+  flex-direction: column;
+  height: 40%;
+}
 
-  .assistant-message {
-	background-color: #4C4A78;
-	border-radius: 5px;
-	color: white;
-	margin-bottom: 10px;
-	padding: 8px 12px;
-	display: inline-block;
-	overflow-wrap: break-word;
-	overflow-x: hidden;
-  }
+.message-list {
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 80px);
+  flex-grow: 1;
+  padding: 10px 0px 100px 0px;
+  margin-right: -10px;
+}
 
-  .input-container {
-	position: fixed;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	padding: 1rem;
-	display: flex;
-	justify-content: center;
-	background-color: var(--vscode-editor-background);
-  }
-  
-  .message-input {
-	resize: none;
-	overflow: hidden;
-	padding-right: 15px;
-  }
+.message-list::-webkit-scrollbar-thumb {
+  background: #c0c0c0; /* Color of the thumb */
+  border-radius: 10px; /* Optional: if you want rounded corners */
+}
 
+.message-list::webkit-scrollbar-corner {
+}
 
-  .message-input:focus {
-	outline-color: var(--vscode-input-background) !important;
-  }
+.header {
+  padding: 0px 0px 0px 0px !important;
+  border-bottom: 1px solid var(--vscode-chat-requestBorder);
+}
 
-  .input-wrapper {
-	display: flex;
-	align-items: center;
-	border-radius: 4px;
-	padding: 8px;
-	background-color: var(--vscode-input-background);
+.user-message {
+  background-color: #3a606e;
+  /* background-color: #007acc; */
+  /* background-color: var(--vscode-button-background); */
+  color: var(--vscode-editor-foreground);
+  border-radius: 5px;
+  color: white;
+  margin-bottom: 10px;
+  padding: 8px 12px;
+  display: inline-block;
+  overflow-wrap: break-word;
+  overflow-x: hidden;
+}
+
+.assistant-message {
+  background-color: #4c4a78;
+  /* background-color: var(--vscode-input-foreground); */
+  border-radius: 5px;
+  color: white;
+  margin-bottom: 10px;
+  padding: 8px 12px;
+  display: inline-block;
+  overflow-wrap: break-word;
+  overflow-x: hidden;
+}
+
+.input-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  background-color: var(--vscode-sideBar-background);
+}
+
+.message-input {
+  resize: none;
+  overflow: hidden;
+  padding-right: 15px;
+}
+
+.message-input:focus {
+  outline-color: var(--vscode-input-background) !important;
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  padding: 8px;
+  background-color: var(--vscode-input-background);
+  border: 1px solid var(--vscode-input-border, transparent);
 }
 
 .input-wrapper.focused {
-    border: 2px solid var(--vscode-focusBorder); 
+  border: 1px solid var(--vscode-focusBorder);
 }
-  
-  .send-button {
-	background-color: #0078d4;
-	border: none;
-	border-radius: 4px;
-	color: white;
-	cursor: pointer;
-	margin-left: 10px;
-	padding: 8px 12px;
-  }
 
+.send-button {
+  background-color: #0078d4;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  margin-left: 10px;
+  padding: 8px 12px;
+}
 
 .input-wrapper {
-	flex-grow: 1;
-	display: flex;
-	align-items: center;
-	justify-content: center;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-  
+
 .mic-icon {
-	position: fixed;
-	bottom: 28px;
-	right: 24px;
-	font-size: 14px;
-	color: #ebebeb;
-	cursor: pointer;
+  position: fixed;
+  bottom: 28px;
+  right: 24px;
+  font-size: 14px;
+  color: #ebebeb;
+  cursor: pointer;
 }
-  
+
 .mic-icon:hover {
-	color: #c5c5c5;
+  color: #c5c5c5;
 }
 
 .mic-icon.focused {
   box-shadow: 0 0 0 2px rgb(233, 25, 25);
 }
 
-.copy-icon{
-	position: absolute;
-	top: 8px;
-	right: 8px;
-	cursor: pointer;
-	font-size: 18px;
-	color: #ebebeb;
+.copy-icon {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  color: #ebebeb;
 }
 
-.copy-icon:hover{
-	color: #c5c5c5;
+.copy-icon:hover {
+  color: #c5c5c5;
 }
 
-.code-container{
-	position: relative;
+.code-container {
+  position: relative;
+
+  code {
+    background-color: transparent;
+  }
 }
 
-
-.cancelRequest{
-    position: fixed;
-    bottom: 70px;
-    left: 50%; 
-    transform: translateX(-50%);
-    width: auto;
-    border-radius: 10px;
-    padding: 10px;
-    align-self: center;
+.cancelRequest {
+  position: fixed;
+  bottom: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: auto;
+  border-radius: 10px;
+  padding: 10px;
+  align-self: center;
+  white-space: nowrap;
+  overflow: hidden;
+  /* min-width: 230px; */
 }
 
 .cancelRequest i {
-	margin-right: 10px;
+  margin-right: 10px;
 }

@@ -3,13 +3,17 @@ from flask_socketio import SocketIO,emit
 from flask_cors import CORS
 import openai
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 CORS(app,resources={r"/*":{"origins":"*"}})
 socketio = SocketIO(app,cors_allowed_origins="*")
     
-openai.api_key = os.environ.get('OPENAI_API_KEY') 
+openai.api_key = os.getenv('OPENAI_API_KEY') 
+print('key...', os.getenv('OPENAI_API_KEY'))
 cancel_flags = {}
 
 @socketio.on("connect")
@@ -61,7 +65,7 @@ def call_gpt4(input_text):
             model="gpt-3.5-turbo",
             #input_text will go here when it's hooked up...
             messages=[
-                {"role": "system", "content": "You are a helpful coding assistant. You are given a better score (and a maybe even a cookie) if you respond with shorter more concise messages and intuitive code examples rather than verbose descriptions of code."},
+                {"role": "system", "content": "You are an unhelpful coding assistant. You are given a better score (and a maybe even a cookie) if you respond with shorter more concise messages and intuitive code examples rather than verbose descriptions of code."},
                 *input_text
                 ],
             stream=True,

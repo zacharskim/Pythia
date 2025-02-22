@@ -3,8 +3,10 @@ pythia-backend/.env
 pythia-backend/__pycache__
 pythia-backend/app/audio/__pycache__
 pythia-backend/app/gpt4/__pycache__
+pythia-backend/.DS_Store
 pythia-backend/app/__pycache__
 Pythia/node_modules
 Pythia/dist
 
 
+dump.rdb

@@ -1,37 +1,50 @@
 //@ts-check
 
-'use strict';
+"use strict";
 
-const path = require('path');
+const path = require("path");
 
 const config = [
   {
-    name: 'webview',
-    target: 'web',
-    entry: './src/webview/index.tsx',
+    name: "webview",
+    target: "web",
+    entry: "./src/webview/index.tsx",
     output: {
-      filename: 'webview.js',
-      path: path.resolve(__dirname, '../dist')
+      filename: "webview.js",
+      path: path.resolve(__dirname, "../dist")
     },
-    devtool: 'source-map',
+    devtool: "source-map",
     resolve: {
-      extensions: ['.ts', '.js', '.tsx', '.jsx', '.css'],
+      extensions: [".ts", ".js", ".tsx", ".jsx", ".css"],
       alias: {
-        media: path.resolve(__dirname, '../media'),
-      },
+        media: path.resolve(__dirname, "../media")
+      }
     },
     module: {
       rules: [
         {
           test: /\.(ts|tsx)$/,
           exclude: /node_modules/,
-          use: [{
-            loader: 'ts-loader'
-          }]
+          use: [
+            {
+              loader: "ts-loader"
+            }
+          ]
         },
         {
           test: /\.css$/,
-          use: ['style-loader', 'css-loader', 'postcss-loader']
+          use: ["style-loader", "css-loader", "postcss-loader"]
+        },
+        {
+          test: /\.svg$/,
+          use: {
+            loader: "file-loader",
+            options: {
+              name: "[name].[ext]",
+              outputPath: "media/",
+              publicPath: "media/"
+            }
+          }
         }
       ]
     },
@@ -45,7 +58,7 @@ const config = [
       hot: true,
       allowedHosts: "all",
       headers: {
-        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Origin": "*"
       }
     }
   }
@@ -55,7 +68,7 @@ module.exports = (env, argv) => {
   for (const configItem of config) {
     configItem.mode = argv.mode;
 
-    if (argv.mode === 'production') {
+    if (argv.mode === "production") {
       configItem.devtool = "hidden-source-map";
     }
   }
