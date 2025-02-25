@@ -25,6 +25,8 @@ export default function MessageBaseComponent(props: IMessageBaseComponentProps) 
   const [messages, setMessages] = React.useState<Message[]>([]);
   const [inputValue, setInputValue] = React.useState<string>("");
 
+  const vscode = window.vscodeApi; // Ensure vscode API is available
+
   // const messageListRef = React.useRef<HTMLDivElement>(null);
 
   // const updateScroll = () => {
@@ -69,6 +71,7 @@ export default function MessageBaseComponent(props: IMessageBaseComponentProps) 
   }, []);
 
   const receiveMessage = (event: { data: clearMsg }) => {
+    console.log("EVENT RECIEVED>>>");
     const message = event.data; // The JSON data our extension sent
     if (message.command === "clearChat") {
       setMessages([]);
@@ -82,6 +85,13 @@ export default function MessageBaseComponent(props: IMessageBaseComponentProps) 
       socket?.emit("data", messages);
       setResponseLoading(true);
     }
+
+    console.log("windwo", window, "posting", messages);
+    console.log(vscode, "hmmm");
+    vscode?.postMessage({
+      command: "saveMessages",
+      data: JSON.stringify(messages)
+    });
   }, [messages]);
 
   React.useEffect(() => {

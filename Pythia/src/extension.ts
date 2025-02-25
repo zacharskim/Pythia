@@ -103,9 +103,43 @@ export async function activate(context: vscode.ExtensionContext) {
     }
   });
 
+  //ahh this is pretty much it...make it better in the morning...
+  //   let recieveChatDisposable = currentWebviewPanel?.onDidReceiveMessage(
+  //     async (message) => {
+  //       console.log("messages from extension", message);
+  //       if (message.command === "saveMessages") {
+  //         await context.globalState.update("lastConversation", message.data);
+  //         // console.log("Messages saved:", message.data);
+  //       }
+  //     },
+  //     undefined,
+  //     context.subscriptions
+  //   );
+
+  const disposableMessageListener = currentWebviewPanel?.onDidReceiveMessage(
+    async (message) => {
+      console.log("messages from extension", message);
+      if (message.command === "saveMessages") {
+        // await context.globalState.update("lastConversation", message.data);
+        console.log("Messages saved:", message.data);
+      }
+    },
+    undefined,
+    context.subscriptions
+  );
+
+  if (disposableMessageListener) {
+    context.subscriptions.push(disposableMessageListener);
+  }
+
   context.subscriptions.push(clearChatDisposable);
 
   console.log("Extension activated!");
+
+  await context.globalState.update("myKey", "someValue");
+
+  const value = context.globalState.get<string>("myKey");
+  console.log(value); // "someValue"
 
   const config = vscode.workspace.getConfiguration();
   const apiKey = config.get<string>("yourExtension.apiKey");
