@@ -3,6 +3,7 @@ import { Socket } from "socket.io-client";
 import InputField from "./InputField";
 import Messages from "./Messages";
 import { Message } from "../types";
+import VsCodeApiContext from "../vscodeApiContext";
 
 export interface IMessageBaseComponentProps {
   socket: Socket | null;
@@ -24,8 +25,9 @@ export default function MessageBaseComponent(props: IMessageBaseComponentProps) 
 
   const [messages, setMessages] = React.useState<Message[]>([]);
   const [inputValue, setInputValue] = React.useState<string>("");
+  const vscode = React.useContext(VsCodeApiContext);
 
-  const vscode = window.vscodeApi; // Ensure vscode API is available
+  // const vscode = window.vscodeApi; // Ensure vscode API is available
 
   // const messageListRef = React.useRef<HTMLDivElement>(null);
 
@@ -71,7 +73,7 @@ export default function MessageBaseComponent(props: IMessageBaseComponentProps) 
   }, []);
 
   const receiveMessage = (event: { data: clearMsg }) => {
-    console.log("EVENT RECIEVED>>>");
+    console.log("EVENT RECIEVED>>>", event);
     const message = event.data; // The JSON data our extension sent
     if (message.command === "clearChat") {
       setMessages([]);

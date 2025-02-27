@@ -3,29 +3,28 @@ import { createRoot } from "react-dom/client";
 import VsCodeApiContext from "./vscodeApiContext";
 import { App } from "./App";
 
-declare global {
-  interface Window {
-    vscodeApi?: {
-      getState: () => unknown;
-      setState: (data: unknown) => void;
-      postMessage: (msg: unknown) => void;
-    };
-  }
-}
+// declare global {
+//   interface Window {
+//     vscodeApi?: {
+//       getState: () => unknown;
+//       setState: (data: unknown) => void;
+//       postMessage: (msg: unknown) => void;
+//     };
+//   }
+// }
+declare var acquireVsCodeApi: any;
 
 // allows HMR to occur despite already calling acquireVsCodeApi
-if (!window.vscodeApi) {
-  window.vscodeApi = acquireVsCodeApi();
-  console.log(window.vscodeApi.getState(), "state");
-  console.log(window.vscodeApi, "api i guess");
-  console.log(typeof App, "this is the indow i guess...");
-  window.vscodeApi.setState({ messages: ["ooga booga"], isLoading: false, app: App });
-}
+const vscode = acquireVsCodeApi();
+vscode.postMessage({
+  command: "alert",
+  text: "🐛  on line " + 63
+});
 
 const elm = document.querySelector("#root");
 if (elm) {
   createRoot(elm).render(
-    <VsCodeApiContext.Provider value={window.vscodeApi}>
+    <VsCodeApiContext.Provider value={vscode}>
       <App />
     </VsCodeApiContext.Provider>
   );

@@ -25,6 +25,27 @@ export async function activate(context: vscode.ExtensionContext) {
           enableScripts: true
         };
         currentWebviewPanel.html = getWebviewContent(context, currentWebviewPanel);
+
+        console.log("HELLO WHAT", context.globalState.get("hasMessageListner"));
+
+        if (true) {
+          console.log("HELLO ATTATCHING>>");
+          currentWebviewPanel.onDidReceiveMessage(
+            (message) => {
+              console.log("📩 MESSAGE RECEIVED >>>>", message);
+              switch (message.command) {
+                case "alert":
+                  vscode.window.showErrorMessage(message.text);
+                  return;
+              }
+            },
+            undefined,
+            context.subscriptions
+          );
+
+          // ✅ Mark that the listener has been attached to prevent duplicates
+          context.globalState.update("hasMessageListener", true);
+        }
       }
     })
   );
@@ -99,22 +120,10 @@ export async function activate(context: vscode.ExtensionContext) {
   let clearChatDisposable = vscode.commands.registerCommand("pythia.clearChat", async () => {
     console.log("working");
     if (currentWebviewPanel) {
+      console.log(currentWebviewPanel, "wtf");
       currentWebviewPanel.postMessage({ command: "clearChat" });
     }
   });
-
-  //ahh this is pretty much it...make it better in the morning...
-  //   let recieveChatDisposable = currentWebviewPanel?.onDidReceiveMessage(
-  //     async (message) => {
-  //       console.log("messages from extension", message);
-  //       if (message.command === "saveMessages") {
-  //         await context.globalState.update("lastConversation", message.data);
-  //         // console.log("Messages saved:", message.data);
-  //       }
-  //     },
-  //     undefined,
-  //     context.subscriptions
-  //   );
 
   const disposableMessageListener = currentWebviewPanel?.onDidReceiveMessage(
     async (message) => {
@@ -187,6 +196,8 @@ const getWebviewContent = (context: ExtensionContext, webview: Webview) => {
   } else {
     scriptUrl = `${localServerUrl}/${jsFile}`;
   }
+
+  //   console.log(scriptUrl, "cmon man");
 
   return `<!DOCTYPE html>
 	<html lang="en">

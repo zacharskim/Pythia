@@ -7,6 +7,6 @@ interface VsCodeApi {
   postMessage: (msg: unknown) => void;
 }
 
-const vsCodeApiContext = React.createContext<VsCodeApi | null>(null);
+const VsCodeApiContext = React.createContext<VsCodeApi | null>(null);
 
-export default vsCodeApiContext;
+export default VsCodeApiContext;
