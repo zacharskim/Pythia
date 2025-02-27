@@ -24,18 +24,34 @@ export async function activate(context: vscode.ExtensionContext) {
         currentWebviewPanel.options = {
           enableScripts: true
         };
+
         currentWebviewPanel.html = getWebviewContent(context, currentWebviewPanel);
 
         console.log("HELLO WHAT", context.globalState.get("hasMessageListner"));
 
         if (true) {
+          //this gives me trouble if it's not set to true,,, need to debug in the future...
           console.log("HELLO ATTATCHING>>");
           currentWebviewPanel.onDidReceiveMessage(
-            (message) => {
+            async (message) => {
               console.log("📩 MESSAGE RECEIVED >>>>", message);
               switch (message.command) {
                 case "alert":
                   vscode.window.showErrorMessage(message.text);
+                  return;
+                case "saveMessages":
+                  let existingMessages = context.globalState.get<string>("savedMessages") || [];
+                  let existingMsgJSON = JSON.parse(existingMessages.data); //close but type errors
+                  console.log(existingMessages, "existing msg");
+                  console.log("Messages saved:", message.data);
+
+                  const newMessages = JSON.parse(message.data);
+                  console.log("NEW MSG", newMessages);
+
+                  const updatedMessages = [...newMessages, ...existingMessages];
+
+                  await context.globalState.update("savedMessages", updatedMessages);
+                  console.log(context.globalState.get("savedMessages"));
                   return;
               }
             },
@@ -43,17 +59,20 @@ export async function activate(context: vscode.ExtensionContext) {
             context.subscriptions
           );
 
-          // ✅ Mark that the listener has been attached to prevent duplicates
+          // Mark that the listener has been attached to prevent duplicates
           context.globalState.update("hasMessageListener", true);
+          webviewView.onDidDispose(() => {
+            console.log("Webview closed, removing message listener flag");
+            context.globalState.update("hasMessageListener", undefined);
+          });
         }
       }
     })
   );
   console.time("Activation");
 
-  // Your activation code here
-
   let currentWebviewPanel: vscode.Webview | undefined;
+  // Your activation code here
 
   //two new commands for indicating listengin or not...
   statusBar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 1);
@@ -125,11 +144,19 @@ export async function activate(context: vscode.ExtensionContext) {
     }
   });
 
+  let loadChatDisposable = vscode.commands.registerCommand("pythia.loadChat", async () => {
+    console.log("working");
+    if (currentWebviewPanel) {
+      console.log(currentWebviewPanel, "wtf");
+      currentWebviewPanel.postMessage({ command: "loadChat", data: context.globalState.get("savedMessages") });
+    }
+  });
+
   const disposableMessageListener = currentWebviewPanel?.onDidReceiveMessage(
     async (message) => {
       console.log("messages from extension", message);
       if (message.command === "saveMessages") {
-        // await context.globalState.update("lastConversation", message.data);
+        await context.globalState.update("savedMessages", message.data);
         console.log("Messages saved:", message.data);
       }
     },
@@ -142,6 +169,8 @@ export async function activate(context: vscode.ExtensionContext) {
   }
 
   context.subscriptions.push(clearChatDisposable);
+
+  context.subscriptions.push(loadChatDisposable);
 
   console.log("Extension activated!");
 

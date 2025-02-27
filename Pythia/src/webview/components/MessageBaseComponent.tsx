@@ -25,6 +25,8 @@ export default function MessageBaseComponent(props: IMessageBaseComponentProps) 
 
   const [messages, setMessages] = React.useState<Message[]>([]);
   const [inputValue, setInputValue] = React.useState<string>("");
+  const [isMessageLoadingStopped, setIsMessageLoadingStopped] = React.useState(false);
+
   const vscode = React.useContext(VsCodeApiContext);
 
   // const vscode = window.vscodeApi; // Ensure vscode API is available
@@ -81,25 +83,33 @@ export default function MessageBaseComponent(props: IMessageBaseComponentProps) 
   };
 
   React.useEffect(() => {
+    if (isMessageLoadingStopped) {
+      vscode?.postMessage({
+        command: "saveMessages",
+        data: JSON.stringify(messages)
+      });
+      setIsMessageLoadingStopped(false); // Reset the flag
+    }
+  }, [isMessageLoadingStopped, messages]);
+
+  React.useEffect(() => {
     //messages changes, so we can emit some data prolly
     const mostRecentMsg: Message = messages[messages.length - 1];
     if (messages.length > 0 && mostRecentMsg["role"] === "user") {
       socket?.emit("data", messages);
       setResponseLoading(true);
     }
-
-    console.log("windwo", window, "posting", messages);
-    console.log(vscode, "hmmm");
-    vscode?.postMessage({
-      command: "saveMessages",
-      data: JSON.stringify(messages)
-    });
+    // vscode?.postMessage({
+    //   command: "saveMessages",
+    //   data: JSON.stringify(messages)
+    // });
   }, [messages]);
 
   React.useEffect(() => {
     socket?.on("data", (data) => {
       if (data.data === "STOP") {
         setResponseLoading(false);
+        setIsMessageLoadingStopped(true);
         setMessages((prevMessages) => [...prevMessages]);
       } else {
         setMessages((prevMessages) => {
