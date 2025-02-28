@@ -17,6 +17,7 @@ export interface IMessageBaseComponentProps {
 
 export interface clearMsg {
   command: string;
+  data: Message[];
 }
 
 export default function MessageBaseComponent(props: IMessageBaseComponentProps) {
@@ -79,6 +80,9 @@ export default function MessageBaseComponent(props: IMessageBaseComponentProps) 
     const message = event.data; // The JSON data our extension sent
     if (message.command === "clearChat") {
       setMessages([]);
+    } else if (message.command === "loadChat") {
+      setMessages(message.data);
+      console.log("messages??", messages);
     }
   };
 

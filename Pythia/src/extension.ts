@@ -40,15 +40,20 @@ export async function activate(context: vscode.ExtensionContext) {
                   vscode.window.showErrorMessage(message.text);
                   return;
                 case "saveMessages":
-                  let existingMessages = context.globalState.get<string>("savedMessages") || [];
-                  let existingMsgJSON = JSON.parse(existingMessages.data); //close but type errors
+                  let existingMessages: string[] | undefined = context.globalState.get("savedMessages");
+                  //   let existingMsgJSON = existingMessages.length !== 0 ? JSON.parse(existingMessages) : []; //close but type errors
                   console.log(existingMessages, "existing msg");
                   console.log("Messages saved:", message.data);
 
                   const newMessages = JSON.parse(message.data);
                   console.log("NEW MSG", newMessages);
 
-                  const updatedMessages = [...newMessages, ...existingMessages];
+                  let updatedMessages;
+                  if (existingMessages !== undefined) {
+                    updatedMessages = [...newMessages, ...existingMessages];
+                  } else {
+                    updatedMessages = [...newMessages];
+                  }
 
                   await context.globalState.update("savedMessages", updatedMessages);
                   console.log(context.globalState.get("savedMessages"));
@@ -66,6 +71,16 @@ export async function activate(context: vscode.ExtensionContext) {
             context.globalState.update("hasMessageListener", undefined);
           });
         }
+
+        console.log("opening t`he webpanel apprently???");
+        webviewView.onDidChangeVisibility(() => {
+          if (webviewView.visible) {
+            console.log("🔄 Webview is visible again, reloading chat...");
+            const savedMessages = context.globalState.get<string>("savedMessages") || "[]";
+            currentWebviewPanel?.postMessage({ command: "loadChat", data: savedMessages });
+            // sendLoadChatMessage();
+          }
+        });
       }
     })
   );
