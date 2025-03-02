@@ -50,7 +50,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
                   let updatedMessages;
                   if (existingMessages !== undefined) {
-                    updatedMessages = [...newMessages, ...existingMessages];
+                    updatedMessages = [...newMessages];
                   } else {
                     updatedMessages = [...newMessages];
                   }
@@ -73,11 +73,13 @@ export async function activate(context: vscode.ExtensionContext) {
         }
 
         console.log("opening t`he webpanel apprently???");
-        webviewView.onDidChangeVisibility(() => {
+        webviewView.onDidChangeVisibility(async () => {
           if (webviewView.visible) {
             console.log("🔄 Webview is visible again, reloading chat...");
             const savedMessages = context.globalState.get<string>("savedMessages") || "[]";
             currentWebviewPanel?.postMessage({ command: "loadChat", data: savedMessages });
+
+            // await context.globalState.update("savedMessages", []);
             // sendLoadChatMessage();
           }
         });
@@ -156,6 +158,8 @@ export async function activate(context: vscode.ExtensionContext) {
     if (currentWebviewPanel) {
       console.log(currentWebviewPanel, "wtf");
       currentWebviewPanel.postMessage({ command: "clearChat" });
+      await context.globalState.update("savedMessages", []);
+      console.log(context.globalState.get("savedMessages"), "messages now...");
     }
   });
 
